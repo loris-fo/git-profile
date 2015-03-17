@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function() {  // callback function
 
   $('.gitprofile').on('submit', function(e) {
 
@@ -8,13 +8,20 @@ $(document).ready(function() {
 
     var template = $('template').html();
 
-    var info = $.get(url, function(info) {
+    $.get(url, renderTemplate)
+      .fail(userNotFoundMessage)
+      .always(clearInput);
+
+    function renderTemplate(info) {
       $('.container').prepend(Mustache.render(template, info));
-    }).fail(function() {
+    }
+
+    function userNotFoundMessage() {
       $('.container').prepend("User not found")
-    }).always(function() {
+    }
+
+    function clearInput() {
       $('input.username').val('');
-      });
+      }
   });
 });
-
